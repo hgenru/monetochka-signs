@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>MONETOCHKA SIGNS</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-debug.js"></script>
@@ -41,7 +42,7 @@
                 <tr>
                     <td data-bind="text: $data.first_name"></td>
                     <td data-bind="text: $data.last_name"></td>
-                    <!-- <td style="white-space: pre-line;" data-bind="text: text"></td> -->
+                    <td style="white-space: pre-line;" data-bind="text: $data.text"></td>
                 </tr>
             </tbody>
         </table>
@@ -62,23 +63,38 @@
     var app = {reposts: ko.observableArray()};
     ko.applyBindings(app);
 
-    var url = 'https://api.vk.com/method/likes.getList?type=post&owner_id=119152453&item_id=7127&filter=copies&extended=1&count=1000&v=5.53';
+    var get_likes = 'https://api.vk.com/method/likes.getList?type=post&owner_id=119152453&item_id=7127&filter=copies&extended=1&count=1000&v=5.53';
+    var get_reposts = 'http://api.vk.com/method/wall.getReposts?owner_id=119152453&post_id=7127&count=1000&v=5.53';
     $.ajax({
-        url: url,
+        url: get_reposts,
         jsonp: 'callback',
         dataType: 'jsonp',
         success: function(res) {
-            // var reposts = res.response.items;
-            // var profiles = res.response.profiles;
-            // reposts_list = [];
-            // for (var i = 0; i < reposts.length; i++) {
-            //     var repost = reposts[i];
-            //     var profile = profiles.find(function(p) {return p.id == repost.to_id})
-            //     reposts_list.push({
-            //         profile: profile || {first_name: 'No', last_name: 'Name'}
-            //     });
-            // }
-            app.reposts(res.response.items)
+            var reposts_texts = res.response.items;
+            $.ajax({
+                url: get_likes,
+                jsonp: 'callback',
+                dataType: 'jsonp',
+                success: function(res) {
+                    // var reposts = res.response.items;
+                    // var profiles = res.response.profiles;
+                    // reposts_list = [];
+                    // for (var i = 0; i < reposts.length; i++) {
+                    //     var repost = reposts[i];
+                    //     var profile = profiles.find(function(p) {return p.id == repost.to_id})
+                    //     reposts_list.push({
+                    //         profile: profile || {first_name: 'No', last_name: 'Name'}
+                    //     });
+                    // }
+                    res.response.items.map(function(r) {
+                        rep_text = reposts_texts.find(function(rt) {return rt.to_id === r.id});
+                        if (rep_text) {
+                            r.text = rep_text.text;
+                        }
+                    })
+                    app.reposts(res.response.items)
+                }
+            });
         }
     });
 </script>
