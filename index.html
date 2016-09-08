@@ -40,8 +40,12 @@
         <table>
             <tbody data-bind="foreach: reposts">
                 <tr>
-                    <td data-bind="text: $data.first_name"></td>
-                    <td data-bind="text: $data.last_name"></td>
+                    <td style="white-space: nowrap;">
+                        <a data-bind="attr: {href: 'https://vk.com/' + $data.page}">
+                            <span data-bind="text: $data.first_name"></span>
+                            <span data-bind="text: $data.last_name"></span>
+                        </a>
+                    </td>
                     <td style="white-space: pre-line;" data-bind="text: $data.text"></td>
                 </tr>
             </tbody>
@@ -91,6 +95,7 @@
                         if (rep_text) {
                             r.text = rep_text.text;
                         }
+                        r.page = 'id' + r.id;
                     })
                     app.reposts(res.response.items)
                 }
