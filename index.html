@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MONETOCHKA SIGNS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-debug.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-debug.js"></script>
+    <link rel="stylesheet" type="text/css" href="//igoradamenko.github.io/awsm.css/css/awsm.min.css">
+</head>
+<body>
+
+<header>
+    <h1>MONETOCHKA SIGNS</h1> 
+    <p>Сколько сигн делать монеточке? <span data-bind="if: reposts().length">(Ответ: <span data-bind="text: reposts().length"></span>)</span></p>
+
+    <nav>
+        <ul>
+            <li><a href="#pred">Предыстория</a></li>
+            <li><a href="#list">Список</a></li>
+            <li><a href="#end">Заключение</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section>
+        <h2 id="pred">Предыстория</h2>
+        <p>Как-то пасмурным осенним деньком Монеточка попросила у своих подписчиков репоста, пообещав взамен всем сигну</p>
+        <p>ТАКОГО ОНА НИКАК НЕ ОЖИДАЛА!</p>
+        <div id="vk_post_119152453_7127"></div><script type="text/javascript">  (function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "//vk.com/js/api/openapi.js?127"; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'vk_openapi_js'));  (function() {    if (!window.VK || !VK.Widgets || !VK.Widgets.Post || !VK.Widgets.Post("vk_post_119152453_7127", 119152453, 7127, '4V4u6vKf2v4Op2pNnz-A1kjayZ4', {width: 400})) setTimeout(arguments.callee, 50);  }());</script>
+    </section>
+
+    <section id="list">
+        <h2>Список репостнувших</h2>
+        <!-- ko if: !reposts().length -->
+            <p>Список загружается...</p>
+        <!-- /ko -->
+        <table>
+            <tbody data-bind="foreach: reposts">
+                <tr>
+                    <td data-bind="text: $data.first_name"></td>
+                    <td data-bind="text: $data.last_name"></td>
+                    <!-- <td style="white-space: pre-line;" data-bind="text: text"></td> -->
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="end">
+        <h2>Заключение</h2>
+        <p>Нас пока не триста, но мы уже можем считать себя настоящими спартанцами! Аве! Слава нам! Мы не твоя армия!</p>
+        <p>Ну а монеточка может просто распечатать эту страничку, написать пожеланий и сфоткаться с ней.</p>
+    </section>
+</main>
+
+<script type="text/javascript">
+    var app = {reposts: ko.observableArray()};
+    ko.applyBindings(app);
+
+    var url = 'http://api.vk.com/method/likes.getList?type=post&owner_id=119152453&item_id=7127&filter=copies&extended=1&count=1000&v=5.53';
+    $.ajax({
+        url: url,
+        jsonp: 'callback',
+        dataType: 'jsonp',
+        success: function(res) {
+            // var reposts = res.response.items;
+            // var profiles = res.response.profiles;
+            // reposts_list = [];
+            // for (var i = 0; i < reposts.length; i++) {
+            //     var repost = reposts[i];
+            //     var profile = profiles.find(function(p) {return p.id == repost.to_id})
+            //     reposts_list.push({
+            //         profile: profile || {first_name: 'No', last_name: 'Name'}
+            //     });
+            // }
+            app.reposts(res.response.items)
+        }
+    });
+</script>
+
+</body>
+</html>
