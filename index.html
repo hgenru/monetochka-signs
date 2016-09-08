@@ -64,7 +64,7 @@
     ko.applyBindings(app);
 
     var get_likes = 'https://api.vk.com/method/likes.getList?type=post&owner_id=119152453&item_id=7127&filter=copies&extended=1&count=1000&v=5.53';
-    var get_reposts = 'http://api.vk.com/method/wall.getReposts?owner_id=119152453&post_id=7127&count=1000&v=5.53';
+    var get_reposts = 'https://api.vk.com/method/wall.getReposts?owner_id=119152453&post_id=7127&count=1000&v=5.53';
     $.ajax({
         url: get_reposts,
         jsonp: 'callback',
