@@ -58,7 +58,7 @@
     var app = {reposts: ko.observableArray()};
     ko.applyBindings(app);
 
-    var url = 'http://api.vk.com/method/likes.getList?type=post&owner_id=119152453&item_id=7127&filter=copies&extended=1&count=1000&v=5.53';
+    var url = 'https://api.vk.com/method/likes.getList?type=post&owner_id=119152453&item_id=7127&filter=copies&extended=1&count=1000&v=5.53';
     $.ajax({
         url: url,
         jsonp: 'callback',
